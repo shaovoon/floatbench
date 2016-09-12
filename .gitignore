@@ -34,3 +34,6 @@
 *.iobj
 *.ilk
 *.db
+*.suo
+*.VC
+README.txt
