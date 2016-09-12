@@ -27,3 +27,10 @@
 *.exe
 *.out
 *.app
+
+*.sdf
+*.pdb
+*.ipdb
+*.iobj
+*.ilk
+*.db
