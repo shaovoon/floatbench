@@ -295,19 +295,6 @@ int main(int argc, char *argv [])
 	}
 	stopwatch.stop_timing();
 
-	stopwatch.start_timing("boost_spirit_chr");
-	for (size_t k = 0; k < MAX_LOOP; ++k)
-	{
-		for (size_t j = 0; j<vec.size(); ++j)
-		{
-			pair_type& pr = vec[j];
-			bool success = qi::parse(pr.first.data(), pr.first.data() + pr.first.size(), qi::double_, d);
-			do_not_optimize_away(&d);
-			MYASSERT(d, pr.second);
-		}
-	}
-	stopwatch.stop_timing();
-
 	std::cout << "Last float value: " << d << " <-- Ignore this" << std::endl;
 	return 0;
 }
