@@ -241,6 +241,19 @@ int main(int argc, char *argv [])
 	}
 	stopwatch.stop_timing();
 
+	stopwatch.start_timing("std::stod");
+	for (size_t k = 0; k < MAX_LOOP; ++k)
+	{
+		for (size_t i = 0; i<vec.size(); ++i)
+		{
+			pair_type& pr = vec[i];
+			d = std::stod(pr.first, nullptr);
+			do_not_optimize_away(&d);
+			MYASSERT(d, pr.second);
+		}
+	}
+	stopwatch.stop_timing();
+
 	stopwatch.start_timing("crack_atof");
 	for (size_t k = 0; k < MAX_LOOP; ++k)
 	{
