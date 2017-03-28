@@ -319,7 +319,7 @@ int main(int argc, char *argv [])
 			pair_type& pr = vec[j];
 			bool success = qi::parse(pr.first.cbegin(), pr.first.cend(), qi::double_, d);
 
-			StringToDoubleConverter conv(StringToDoubleConverter::NO_FLAGS, 0.0, NAN, "infinity", "nan");
+			static StringToDoubleConverter conv(StringToDoubleConverter::NO_FLAGS, 0.0, NAN, "infinity", "nan");
 			d = conv.StringToDouble(pr.first.c_str(), pr.first.size(), &processed_characters_count);
 
 			do_not_optimize_away(&d);
