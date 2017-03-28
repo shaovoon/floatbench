@@ -37,3 +37,10 @@
 *.suo
 *.VC
 README.txt
+
+*/.vs/
+*/Release/
+*/Debug/
+
+*.tlog
+*.filters

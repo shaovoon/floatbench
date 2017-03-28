@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -18,13 +18,13 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
@@ -44,13 +44,13 @@
     <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
     <IntDir>$(Configuration)\</IntDir>
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Users\wong\Documents\Shared\boost_1_59_0\boost_1_59_0;$(IncludePath)</IncludePath>
+    <IncludePath>D:\boost_1_63_0;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
     <IntDir>$(Configuration)\</IntDir>
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>D:\boost_1_61_0;$(IncludePath)</IncludePath>
+    <IncludePath>D:\boost_1_63_0;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -91,6 +91,26 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BenchmarkFloatConv.cpp" />
+    <ClCompile Include="google_double_conversion\bignum-dtoa.cc" />
+    <ClCompile Include="google_double_conversion\bignum.cc" />
+    <ClCompile Include="google_double_conversion\cached-powers.cc" />
+    <ClCompile Include="google_double_conversion\diy-fp.cc" />
+    <ClCompile Include="google_double_conversion\double-conversion.cc" />
+    <ClCompile Include="google_double_conversion\fast-dtoa.cc" />
+    <ClCompile Include="google_double_conversion\fixed-dtoa.cc" />
+    <ClCompile Include="google_double_conversion\strtod.cc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="google_double_conversion\bignum-dtoa.h" />
+    <ClInclude Include="google_double_conversion\bignum.h" />
+    <ClInclude Include="google_double_conversion\cached-powers.h" />
+    <ClInclude Include="google_double_conversion\diy-fp.h" />
+    <ClInclude Include="google_double_conversion\double-conversion.h" />
+    <ClInclude Include="google_double_conversion\fast-dtoa.h" />
+    <ClInclude Include="google_double_conversion\fixed-dtoa.h" />
+    <ClInclude Include="google_double_conversion\ieee.h" />
+    <ClInclude Include="google_double_conversion\strtod.h" />
+    <ClInclude Include="google_double_conversion\utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

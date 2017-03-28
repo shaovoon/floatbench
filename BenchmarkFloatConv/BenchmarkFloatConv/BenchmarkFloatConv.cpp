@@ -13,6 +13,7 @@
 #include <chrono>
 #include <boost/lexical_cast.hpp>
 #include <boost/spirit/include/qi.hpp>
+#include "google_double_conversion/double-conversion.h"
 
 typedef std::pair<const std::string, const double> pair_type;
 typedef std::vector< pair_type > vector_type;
@@ -57,7 +58,7 @@ public:
 
 private:
 	std::string text;
-	std::chrono::steady_clock::time_point begin;
+	std::chrono::high_resolution_clock::time_point begin;
 };
 
 // http://crackprogramming.blogspot.sg/2012/10/implement-atof.html
@@ -254,6 +255,19 @@ int main(int argc, char *argv [])
 	}
 	stopwatch.stop_timing();
 
+	stopwatch.start_timing("std::strtod");
+	for (size_t k = 0; k < MAX_LOOP; ++k)
+	{
+		for (size_t i = 0; i < vec.size(); ++i)
+		{
+			pair_type& pr = vec[i];
+			d = std::strtod(pr.first.c_str(), nullptr);
+			do_not_optimize_away(&d);
+			MYASSERT(d, pr.second);
+		}
+	}
+	stopwatch.stop_timing();
+
 	stopwatch.start_timing("crack_atof");
 	for (size_t k = 0; k < MAX_LOOP; ++k)
 	{
@@ -289,6 +303,25 @@ int main(int argc, char *argv [])
 		{
 			pair_type& pr = vec[j];
 			bool success = qi::parse(pr.first.cbegin(), pr.first.cend(), qi::double_, d);
+			do_not_optimize_away(&d);
+			MYASSERT(d, pr.second);
+		}
+	}
+	stopwatch.stop_timing();
+
+	stopwatch.start_timing("google_dconv");
+	int processed_characters_count = 0;
+	using namespace double_conversion;
+	for (size_t k = 0; k < MAX_LOOP; ++k)
+	{
+		for (size_t j = 0; j < vec.size(); ++j)
+		{
+			pair_type& pr = vec[j];
+			bool success = qi::parse(pr.first.cbegin(), pr.first.cend(), qi::double_, d);
+
+			StringToDoubleConverter conv(StringToDoubleConverter::NO_FLAGS, 0.0, NAN, "infinity", "nan");
+			d = conv.StringToDouble(pr.first.c_str(), pr.first.size(), &processed_characters_count);
+
 			do_not_optimize_away(&d);
 			MYASSERT(d, pr.second);
 		}
