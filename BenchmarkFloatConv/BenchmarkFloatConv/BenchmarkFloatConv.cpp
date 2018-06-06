@@ -61,60 +61,119 @@ private:
 	std::chrono::high_resolution_clock::time_point begin;
 };
 
-// http://crackprogramming.blogspot.sg/2012/10/implement-atof.html
+// Original crack_atof version is at http://crackprogramming.blogspot.sg/2012/10/implement-atof.html
+// But it cannot convert floating point with high +/- exponent.
+// The version below by Tian Bo fixes that problem and improves performance by 10%
+// http://coliru.stacked-crooked.com/a/2e28f0d71f47ca5e
+double pow10(int n)
+{
+	double ret = 1.0;
+	double r = 10.0;
+	if (n < 0) {
+		n = -n;
+		r = 0.1;
+	}
+
+	while (n) {
+		if (n & 1) {
+			ret *= r;
+		}
+		r *= r;
+		n >>= 1;
+	}
+	return ret;
+}
+
 double crack_atof(const char* num)
 {
-	if (!num || !*num)
+	if (!num || !*num) {
 		return 0;
-	double integerPart = 0;
-	double fractionPart = 0;
-	int divisorForFraction = 1;
+	}
+
 	int sign = 1;
-	bool inFraction = false;
-	/*Take care of +/- sign*/
-	if (*num == '-')
-	{
+	double integerPart = 0.0;
+	double fractionPart = 0.0;
+	bool hasFraction = false;
+	bool hasExpo = false;
+
+	// Take care of +/- sign
+	if (*num == '-') {
 		++num;
 		sign = -1;
 	}
-	else if (*num == '+')
-	{
+	else if (*num == '+') {
 		++num;
 	}
-	while (*num != '\0')
-	{
-		if (*num >= '0' && *num <= '9')
-		{
-			if (inFraction)
-			{
-				/*See how are we converting a character to integer*/
-				fractionPart = fractionPart * 10 + (*num - '0');
-				divisorForFraction *= 10;
-			}
-			else
-			{
-				integerPart = integerPart * 10 + (*num - '0');
-			}
+
+	while (*num != '\0') {
+		if (*num >= '0' && *num <= '9') {
+			integerPart = integerPart * 10 + (*num - '0');
 		}
-		else if (*num == '.')
-		{
-			if (inFraction)
-				return sign * (integerPart + fractionPart / divisorForFraction);
-			else
-				inFraction = true;
+		else if (*num == '.') {
+			hasFraction = true;
+			++num;
+			break;
 		}
-		else
-		{
-			return sign * (integerPart + fractionPart / divisorForFraction);
+		else if (*num == 'e') {
+			hasExpo = true;
+			++num;
+			break;
+		}
+		else {
+			return sign * integerPart;
 		}
 		++num;
 	}
-	return sign * (integerPart + fractionPart / divisorForFraction);
+
+	if (hasFraction) {
+		double fractionExpo = 0.1;
+
+		while (*num != '\0') {
+			if (*num >= '0' && *num <= '9') {
+				fractionPart += fractionExpo * (*num - '0');
+				fractionExpo *= 0.1;
+			}
+			else if (*num == 'e') {
+				hasExpo = true;
+				++num;
+				break;
+			}
+			else {
+				return sign * (integerPart + fractionPart);
+			}
+			++num;
+		}
+	}
+
+	// parsing exponet part
+	double expPart = 1.0;
+	if (*num != '\0' && hasExpo) {
+		int expSign = 1;
+		if (*num == '-') {
+			expSign = -1;
+			++num;
+		}
+		else if (*num == '+') {
+			++num;
+		}
+
+		int e = 0;
+		while (*num != '\0' && *num >= '0' && *num <= '9') {
+			e = e * 10 + *num - '0';
+			++num;
+		}
+
+		expPart = pow10(expSign * e);
+	}
+
+	return sign * (integerPart + fractionPart) * expPart;
 }
+
 
 #define white_space(c) ((c) == ' ' || (c) == '\t')
 #define valid_digit(c) ((c) >= '0' && (c) <= '9')
 // http://www.leapsecond.com/tools/fast_atof.c
+// Do not use this one because the converison is imprecise.
 double fast_atof(const char *p)
 {
 	int frac;
