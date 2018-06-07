@@ -17,13 +17,13 @@ Looping 1 million times
 Benchmark Version 1.1 uses crack_atof contributed by Tian Bo which fixes scientific notation conversion problem and and improves performance by 10%. Now crack_atof is as fast as fast_atof.
 
 ```
-               atof:  230ms
-       lexical_cast: 1245ms
- std::istringstream: 1335ms
-          std::stod:  260ms
-        std::strtod:  235ms
+               atof:  277ms
+       lexical_cast: 1371ms
+ std::istringstream: 1496ms
+          std::stod:  265ms
+        std::strtod:  256ms
          crack_atof:   11ms
           fast_atof:   11ms
-       boost_spirit:   41ms
-       google_dconv:   89ms
+       boost_spirit:   49ms
+       google_dconv:   59ms
 ```

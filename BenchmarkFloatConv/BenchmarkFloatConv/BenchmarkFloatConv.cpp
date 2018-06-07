@@ -14,6 +14,7 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/spirit/include/qi.hpp>
 #include "google_double_conversion/double-conversion.h"
+#include <charconv>
 
 typedef std::pair<const std::string, const double> pair_type;
 typedef std::vector< pair_type > vector_type;
@@ -376,7 +377,6 @@ int main(int argc, char *argv [])
 		for (size_t j = 0; j < vec.size(); ++j)
 		{
 			pair_type& pr = vec[j];
-			bool success = qi::parse(pr.first.cbegin(), pr.first.cend(), qi::double_, d);
 
 			static StringToDoubleConverter conv(StringToDoubleConverter::NO_FLAGS, 0.0, NAN, "infinity", "nan");
 			d = conv.StringToDouble(pr.first.c_str(), pr.first.size(), &processed_characters_count);
