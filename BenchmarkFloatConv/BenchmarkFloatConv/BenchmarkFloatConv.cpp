@@ -44,12 +44,12 @@ class timer
 {
 public: 
 	timer() = default;
-	void start_timing(const std::string& text_)
+	void start(const std::string& text_)
 	{
 		text = text_;
 		begin = std::chrono::high_resolution_clock::now();
 	}
-	void stop_timing()
+	void stop()
 	{
 		auto end = std::chrono::high_resolution_clock::now();
 		auto dur = end - begin;
@@ -262,7 +262,7 @@ int main(int argc, char *argv [])
 	timer stopwatch;
 	double d = 0.0;
 
-	stopwatch.start_timing("atof");
+	stopwatch.start("atof");
 	for (size_t k = 0; k<MAX_LOOP; ++k)
 	{
 		for (size_t j=0; j<vec.size(); ++j)
@@ -273,9 +273,9 @@ int main(int argc, char *argv [])
 			MYASSERT(d, pr.second);
 		}
 	}
-	stopwatch.stop_timing();
+	stopwatch.stop();
 
-	stopwatch.start_timing("lexical_cast");
+	stopwatch.start("lexical_cast");
 	for (size_t k = 0; k < MAX_LOOP; ++k)
 	{
 		for (size_t j=0; j<vec.size(); ++j)
@@ -286,9 +286,9 @@ int main(int argc, char *argv [])
 			MYASSERT(d, pr.second);
 		}
 	}
-	stopwatch.stop_timing();
+	stopwatch.stop();
 
-	stopwatch.start_timing("std::istringstream");
+	stopwatch.start("std::istringstream");
 	for (size_t k = 0; k < MAX_LOOP; ++k)
 	{
 		for (size_t i = 0; i<vec.size(); ++i)
@@ -300,9 +300,9 @@ int main(int argc, char *argv [])
 			MYASSERT(d, pr.second);
 		}
 	}
-	stopwatch.stop_timing();
+	stopwatch.stop();
 
-	stopwatch.start_timing("std::stod");
+	stopwatch.start("std::stod");
 	for (size_t k = 0; k < MAX_LOOP; ++k)
 	{
 		for (size_t i = 0; i<vec.size(); ++i)
@@ -313,9 +313,9 @@ int main(int argc, char *argv [])
 			MYASSERT(d, pr.second);
 		}
 	}
-	stopwatch.stop_timing();
+	stopwatch.stop();
 
-	stopwatch.start_timing("std::strtod");
+	stopwatch.start("std::strtod");
 	for (size_t k = 0; k < MAX_LOOP; ++k)
 	{
 		for (size_t i = 0; i < vec.size(); ++i)
@@ -326,9 +326,9 @@ int main(int argc, char *argv [])
 			MYASSERT(d, pr.second);
 		}
 	}
-	stopwatch.stop_timing();
+	stopwatch.stop();
 
-	stopwatch.start_timing("crack_atof");
+	stopwatch.start("crack_atof");
 	for (size_t k = 0; k < MAX_LOOP; ++k)
 	{
 		for (size_t j=0; j<vec.size(); ++j)
@@ -339,9 +339,9 @@ int main(int argc, char *argv [])
 			MYASSERT(d, pr.second);
 		}
 	}
-	stopwatch.stop_timing();
+	stopwatch.stop();
 
-	stopwatch.start_timing("fast_atof");
+	stopwatch.start("fast_atof");
 	for (size_t k = 0; k < MAX_LOOP; ++k)
 	{
 		for (size_t j=0; j<vec.size(); ++j)
@@ -352,11 +352,11 @@ int main(int argc, char *argv [])
 			MYASSERT(d, pr.second);
 		}
 	}
-	stopwatch.stop_timing();
+	stopwatch.stop();
 
 	namespace qi = boost::spirit::qi;
 
-	stopwatch.start_timing("boost_spirit");
+	stopwatch.start("boost_spirit");
 	for (size_t k = 0; k < MAX_LOOP; ++k)
 	{
 		for (size_t j=0; j<vec.size(); ++j)
@@ -367,9 +367,9 @@ int main(int argc, char *argv [])
 			MYASSERT(d, pr.second);
 		}
 	}
-	stopwatch.stop_timing();
+	stopwatch.stop();
 
-	stopwatch.start_timing("google_dconv");
+	stopwatch.start("google_dconv");
 	int processed_characters_count = 0;
 	using namespace double_conversion;
 	for (size_t k = 0; k < MAX_LOOP; ++k)
@@ -385,7 +385,7 @@ int main(int argc, char *argv [])
 			MYASSERT(d, pr.second);
 		}
 	}
-	stopwatch.stop_timing();
+	stopwatch.stop();
 
 	std::cout << "Last float value: " << d << " <-- Ignore this" << std::endl;
 	return 0;
