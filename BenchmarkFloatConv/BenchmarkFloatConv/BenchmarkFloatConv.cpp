@@ -274,7 +274,7 @@ int main(int argc, char *argv [])
 		}
 	}
 	stopwatch.stop();
-
+	
 	stopwatch.start("lexical_cast");
 	for (size_t k = 0; k < MAX_LOOP; ++k)
 	{
@@ -287,7 +287,7 @@ int main(int argc, char *argv [])
 		}
 	}
 	stopwatch.stop();
-
+	
 	stopwatch.start("std::istringstream");
 	for (size_t k = 0; k < MAX_LOOP; ++k)
 	{
@@ -353,7 +353,7 @@ int main(int argc, char *argv [])
 		}
 	}
 	stopwatch.stop();
-
+	
 	namespace qi = boost::spirit::qi;
 
 	stopwatch.start("boost_spirit");
@@ -368,7 +368,7 @@ int main(int argc, char *argv [])
 		}
 	}
 	stopwatch.stop();
-
+	
 	stopwatch.start("google_dconv");
 	int processed_characters_count = 0;
 	using namespace double_conversion;
@@ -381,6 +381,19 @@ int main(int argc, char *argv [])
 			static StringToDoubleConverter conv(StringToDoubleConverter::NO_FLAGS, 0.0, NAN, "infinity", "nan");
 			d = conv.StringToDouble(pr.first.c_str(), pr.first.size(), &processed_characters_count);
 
+			do_not_optimize_away(&d);
+			MYASSERT(d, pr.second);
+		}
+	}
+	stopwatch.stop();
+
+	stopwatch.start("std::from_chars");
+	for (size_t k = 0; k < MAX_LOOP; ++k)
+	{
+		for (size_t j = 0; j < vec.size(); ++j)
+		{
+			pair_type& pr = vec[j];
+			std::from_chars(pr.first.data(), pr.first.data() + pr.first.size(), d);
 			do_not_optimize_away(&d);
 			MYASSERT(d, pr.second);
 		}
